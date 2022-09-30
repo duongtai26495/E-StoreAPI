@@ -26,17 +26,13 @@ public class ProductServiceImpl implements ProductService {
 	
 	@Override
 	public Product saveProduct(Product product) {
-		if(!isExistByName(product.getName())) {
-			
+
 			Date date = new Date();
 	        SimpleDateFormat sdf = new SimpleDateFormat(Snippets.TIME_PATTERN);
 	        product.setCreated_at(sdf.format(date));
 	        product.setLast_edited(sdf.format(date));
 	        product.setAdded_by(getUsernameLogin());
-			productRepository.save(product);
-			return product;
-		}
-		return null;
+			return productRepository.save(product);
 	}
 
 	@Override

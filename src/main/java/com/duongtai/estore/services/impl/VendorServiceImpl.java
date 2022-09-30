@@ -20,24 +20,18 @@ public class VendorServiceImpl implements VendorService{
 	
 	@Override
 	public Vendor saveVendor(Vendor vendor) {
-		if(!isExistByName(vendor.getName())) {
 			Date date = new Date();
 	        SimpleDateFormat sdf = new SimpleDateFormat(Snippets.TIME_PATTERN);
 	        vendor.setCreated_at(sdf.format(date));
 	        vendor.setLast_edited(sdf.format(date));
 	        vendor.setCreated_by(getUsernameLogin());
-	        if(vendorRepository.save(vendor) != null) {
-	        	return vendor;
-	        }	
-		}
-		return null;
-		
+			return vendorRepository.save(vendor);
 	}
 
 	@Override
 	public Vendor editVendorById(Vendor vendor) {
-		if(vendorRepository.existsById(vendor.getVendor_id())) {
-			Vendor vendor_found = vendorRepository.findById(vendor.getVendor_id()).get();
+		if(vendorRepository.existsById(vendor.getId())) {
+			Vendor vendor_found = vendorRepository.findById(vendor.getId()).get();
 			if(vendor.getImage() != null && !vendor.getImage().equals(vendor_found.getImage())) {
 				vendor_found.setImage(vendor.getImage());
 			}
@@ -49,9 +43,7 @@ public class VendorServiceImpl implements VendorService{
 			Date date = new Date();
 	        SimpleDateFormat sdf = new SimpleDateFormat(Snippets.TIME_PATTERN);
 			vendor_found.setLast_edited(sdf.format(date));
-			if(vendorRepository.save(vendor_found) != null) {
-				return vendor_found;
-			}
+			return vendorRepository.save(vendor_found);
 		}
 		return saveVendor(vendor);
 	}

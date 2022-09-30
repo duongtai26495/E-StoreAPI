@@ -26,7 +26,7 @@ public class Product {
 	private String name;
 	
 	@Column(name = "product_note", length=2000)
-	private String product_note;
+	private String note;
 	
 	@ManyToOne()
     @JoinColumn(name = "products", referencedColumnName = "category_id")
@@ -48,7 +48,7 @@ public class Product {
 	
 	@ManyToMany
 	@JoinTable(name = "product_image", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name ="image_id"))
-	private List<Image> product_images;
+	private List<Image> images;
 	
 	@ManyToMany(mappedBy = "products")
 	private List<Order> orders;
@@ -78,15 +78,21 @@ public class Product {
 	}
 
 
-	public String getProduct_note() {
-		return product_note;
+	public String getNote() {
+		return note;
 	}
 
-	public void setProduct_note(String product_note) {
-		this.product_note = product_note;
+	public void setNote(String note) {
+		this.note = note;
 	}
 
-	
+	public List<Image> getImages() {
+		return images;
+	}
+
+	public void setImages(List<Image> images) {
+		this.images = images;
+	}
 
 	public Category getCategory() {
 		return category;
@@ -134,15 +140,6 @@ public class Product {
 
 	public void setLast_edited(String last_edited) {
 		this.last_edited = last_edited;
-	}
-
-
-	public List<Image> getProduct_images() {
-		return product_images;
-	}
-
-	public void setProduct_images(List<Image> product_images) {
-		this.product_images = product_images;
 	}
 
 	public List<Order> getOrders() {

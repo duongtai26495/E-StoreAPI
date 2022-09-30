@@ -27,7 +27,7 @@ public class Order {
 	private Long id;
 	
 	@Column(name = "order_note", length = 255)
-	private String order_note;
+	private String note;
 	
 	@ManyToMany
 	@JoinTable(name = "order_details", joinColumns = @JoinColumn(name = "order_id"), inverseJoinColumns = @JoinColumn(name = "product_id"))
@@ -69,19 +69,13 @@ public class Order {
 	}
 
 
-
-
-	public String getOrder_note() {
-		return order_note;
+	public String getNote() {
+		return note;
 	}
 
-
-
-	public void setOrder_note(String order_note) {
-		this.order_note = order_note;
+	public void setNote(String note) {
+		this.note = note;
 	}
-
-
 
 	public List<Product> getProducts() {
 		return products;

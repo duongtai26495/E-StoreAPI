@@ -28,7 +28,7 @@ public class Category {
 	private String name;
 	
 	@Column(length = 2000)
-	private String category_dtails;
+	private String details;
 	
 	private String created_at;
 	
@@ -60,13 +60,12 @@ public class Category {
 		this.name = name;
 	}
 
-
-	public String getCategory_dtails() {
-		return category_dtails;
+	public String getDetails() {
+		return details;
 	}
 
-	public void setCategory_dtails(String category_dtails) {
-		this.category_dtails = category_dtails;
+	public void setDetails(String details) {
+		this.details = details;
 	}
 
 	public String getCreated_at() {

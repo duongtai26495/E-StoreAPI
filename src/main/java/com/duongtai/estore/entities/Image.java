@@ -25,7 +25,7 @@ public class Image {
 	
 	private String added_by;
 	
-	@ManyToMany(mappedBy = "product_images")
+	@ManyToMany(mappedBy = "images")
 	private List<Product> products;
 	
 	public Image() {

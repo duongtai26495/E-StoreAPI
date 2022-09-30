@@ -19,7 +19,7 @@ public class Vendor {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name ="vendor_id")
-	private Long vendor_id;
+	private Long id;
 	
 	@Column(name="vendor_name", length = 255)
 	private String name;
@@ -39,12 +39,12 @@ public class Vendor {
 	public Vendor() {
 	}
 
-	public Long getVendor_id() {
-		return vendor_id;
+	public Long getId() {
+		return id;
 	}
 
-	public void setVendor_id(Long vendor_id) {
-		this.vendor_id = vendor_id;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getName() {

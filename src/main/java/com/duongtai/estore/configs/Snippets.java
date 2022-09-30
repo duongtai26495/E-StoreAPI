@@ -66,4 +66,19 @@ public class Snippets {
 
     //image
     public static final String NONAME = "noname";
+
+    //vendor
+    public static final String VENDOR = "vendor";
+    public static final String CATEGORY = "category";
+    public static final String PRODUCT = "product";
+    public static final String SAVE_VENDOR = "Save new vendor success";
+    public static final String VENDOR_EXIST = "Vendor already exist";
+    public static final String PRODUCT_EXIST = "Product already exsit";
+
+    //save success
+    public static final String SAVE_SUCCESS = "Save new %s success";
+    public static final String CATEGORY_EXIST ="Category already exist";
+    public static final String UPDATED_SUCCESS = "Updated %s success";
+    public static final String DELETED_SUCCESS = "Delete %s success";
+    public static final String NOT_FOUND = "%s with id %s not found";
 }

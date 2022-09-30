@@ -26,22 +26,16 @@ public class CategoryServiceImpl implements CategoryService{
 	
 	@Override
 	public Category saveCategory(Category category) {
-		if(!isExistByName(category.getName())) {
+
 			Date date = new Date();
 	        SimpleDateFormat sdf = new SimpleDateFormat(Snippets.TIME_PATTERN);
 	        category.setCreated_at(sdf.format(date));
 	        category.setLast_edited(sdf.format(date));
 	        category.setCreated_by(getUsernameLogin());
-			categoryRepository.save(category);
 			LOG.info(String.format("Admin: '%s' have create new category name '%s' successfully",
 					getUsernameLogin(),
 					category.getName()));
-			return category;
-		}
-		LOG.info(String.format("Admin: '%s' have create new category name '%s' failed", 
-    			getUsernameLogin(),
-    			category.getName()));
-        return null;
+			return categoryRepository.save(category);
 	}
 
 	@Override
@@ -66,14 +60,14 @@ public class CategoryServiceImpl implements CategoryService{
 				cate_found.setName(category.getName());
 			}
 			
-			if(!category.getCategory_dtails().isEmpty()) {
+			if(!category.getDetails().isEmpty()) {
 			
 				LOG.info(String.format("Admin: '%s' have changed category details from '%s' to '%s'", 
 		    			getUsernameLogin(),
-		    			cate_found.getCategory_dtails(), 
-		    			category.getCategory_dtails()));
+		    			cate_found.getDetails(),
+		    			category.getDetails()));
 				
-				cate_found.setCategory_dtails(category.getCategory_dtails());
+				cate_found.setDetails(category.getDetails());
 			}
 			
 			if(category.getImage() != null) {
