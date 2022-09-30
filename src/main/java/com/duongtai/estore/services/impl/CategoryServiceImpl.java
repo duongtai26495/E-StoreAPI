@@ -44,7 +44,7 @@ public class CategoryServiceImpl implements CategoryService{
 		if(categoryRepository.existsById(category.getId())) {
 			Category cate_found = findCategoryById(category.getId());
 
-			if(!category.getImage().isEmpty() && !category.getImage().equals(cate_found.getImage())) {
+			if(category.getImage() != null && !category.getImage().equals(cate_found.getImage())) {
 				cate_found.setImage(category.getImage());
 			}
 			
@@ -88,9 +88,7 @@ public class CategoryServiceImpl implements CategoryService{
 
 	@Override
 	public void deleteCategoryById(Long id) {
-		if(categoryRepository.existsById(id)){
 			categoryRepository.deleteById(id);
-		}
 	}
 
 	@Override

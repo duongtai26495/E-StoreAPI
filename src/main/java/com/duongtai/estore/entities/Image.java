@@ -2,14 +2,7 @@ package com.duongtai.estore.entities;
 
 import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name ="Images")
@@ -24,7 +17,13 @@ public class Image {
 	private String added_at;
 	
 	private String added_by;
-	
+
+	@OneToMany(targetEntity = Vendor.class, mappedBy = "image", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	private List<Vendor> vendors;
+
+	@OneToMany(targetEntity = Category.class, mappedBy = "image", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	private List<Category> categories;
+
 	@ManyToMany(mappedBy = "images")
 	private List<Product> products;
 	
@@ -64,5 +63,4 @@ public class Image {
 		this.added_by = added_by;
 	}
 
-	
 }

@@ -2,18 +2,7 @@ package com.duongtai.estore.entities;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name ="Category")
@@ -35,8 +24,10 @@ public class Category {
 	private String created_by;
 	
 	private String last_edited;
-	
-	private String image;
+
+	@ManyToOne
+	@JoinColumn(name = "image", referencedColumnName = "id")
+	private Image image;
 	
 	@OneToMany(targetEntity = Product.class, mappedBy = "category",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	private List<Product> products;
@@ -100,13 +91,11 @@ public class Category {
 		this.products = products;
 	}
 
-	public String getImage() {
+	public Image getImage() {
 		return image;
 	}
 
-	public void setImage(String image) {
+	public void setImage(Image image) {
 		this.image = image;
 	}
-	
-	
 }

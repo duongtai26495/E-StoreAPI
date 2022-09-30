@@ -50,9 +50,7 @@ public class VendorServiceImpl implements VendorService{
 
 	@Override
 	public void deleteVendorById(Long id) {
-		if(vendorRepository.existsById(id)) {
 			vendorRepository.deleteById(id);
-		}
 	}
 
 	@Override
