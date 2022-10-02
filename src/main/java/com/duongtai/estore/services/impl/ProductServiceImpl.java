@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,13 +19,16 @@ import com.duongtai.estore.services.ProductService;
 import static com.duongtai.estore.configs.MyUserDetail.getUsernameLogin;
 @Service
 public class ProductServiceImpl implements ProductService {
-
+	private static final Logger LOG = LoggerFactory.getLogger(ProductServiceImpl.class);
 	@Autowired 
 	private ProductRepository productRepository;
 	
 	@Autowired
 	private CategoryServiceImpl categoryService;
-	
+
+	@Autowired
+	private VendorServiceImpl vendorService;
+
 	@Override
 	public Product saveProduct(Product product) {
 
@@ -32,6 +37,11 @@ public class ProductServiceImpl implements ProductService {
 	        product.setCreated_at(sdf.format(date));
 	        product.setLast_edited(sdf.format(date));
 	        product.setAdded_by(getUsernameLogin());
+			LOG.info(String.format("Admin '%s' created new Product name '%s' with category '%s' and vendor '%s'"
+					,getUsernameLogin(),
+					product.getName(),
+					categoryService.findCategoryById(product.getCategory().getId()).getName(),
+					vendorService.findVendorById(product.getVendor().getId()).getName()));
 			return productRepository.save(product);
 	}
 

@@ -4,6 +4,8 @@ import com.duongtai.estore.configs.Snippets;
 import com.duongtai.estore.entities.User;
 import com.duongtai.estore.services.StorageService;
 import org.apache.commons.io.FilenameUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -27,7 +29,7 @@ import static com.duongtai.estore.configs.MyUserDetail.getUsernameLogin;
 
 @Service
 public class StorageServiceImpl implements StorageService {
-
+    private static final Logger LOG = LoggerFactory.getLogger(StorageServiceImpl.class);
     private final Path storageFolder = Paths.get("uploads/images/");
     private final Path storageFolderProfile = Paths.get("uploads/profile");
     @Autowired
@@ -58,12 +60,11 @@ public class StorageServiceImpl implements StorageService {
             if(username.equals(Snippets.NONAME)){
                 CHECK_UPLOAD = 1;
             }
-            else if(username.equals(getUsernameLogin())){
+            else {
                 CHECK_UPLOAD = 2;
             }
 
-        System.out.println("Check : "+CHECK_UPLOAD);
-        System.out.println("File:" +file);
+        LOG.info("CHECK TYPE UPLOAD: "+CHECK_UPLOAD);
         try {
             if (file.isEmpty()) {
                 throw new RuntimeException(Snippets.FAILED_STORE_EMPTY_FILE);
@@ -105,7 +106,7 @@ public class StorageServiceImpl implements StorageService {
                     User user = new User();
                     user.setUsername(getUsernameLogin());
                     user.setProfile_image(generatedFileName);
-                    userService.editByUsername(user);
+                    userService.changeProfileImage(user);
 
                     return generatedFileName;
                 }

@@ -23,7 +23,7 @@ public class Vendor {
 	private String created_by;
 
 	@ManyToOne
-	@JoinColumn(name = "image", referencedColumnName = "id")
+	@JoinColumn(name = "image", referencedColumnName = "image_id")
 	private Image image;
 	
 	@OneToMany(targetEntity = Product.class, mappedBy = "vendor", cascade = CascadeType.ALL,fetch = FetchType.LAZY)

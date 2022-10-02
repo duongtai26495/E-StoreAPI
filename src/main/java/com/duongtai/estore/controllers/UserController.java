@@ -17,6 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static com.duongtai.estore.configs.MyUserDetail.getUsernameLogin;
+
 @CrossOrigin
 @RestController
 @RequestMapping("/user/")
@@ -76,14 +78,18 @@ public class UserController {
 
     @PostMapping("upload_image/{username}")
     public ResponseEntity<ResponseObject> uploadImageWithUsername(@RequestParam("image") MultipartFile file, @PathVariable String username){
-    	String filename = storageService.storeFile(file, username);
-    		if(filename != null) {
-    			return ResponseEntity.status(HttpStatus.OK).body(
-    	    			new ResponseObject(Snippets.SUCCESS, Snippets.UPLOAD_PROFILE_IMAGE_SUCCESS, filename)
-    	    			);
-    		}
+    	String filename = "";
+		if(username.equalsIgnoreCase(getUsernameLogin())){
+			filename = storageService.storeFile(file, username);
+			if(filename != null) {
+				return ResponseEntity.status(HttpStatus.OK).body(
+						new ResponseObject(Snippets.SUCCESS, Snippets.UPLOAD_PROFILE_IMAGE_SUCCESS, filename)
+				);
+			}
+		}
+
     		return ResponseEntity.status(HttpStatus.OK).body(
-	    			new ResponseObject(Snippets.FAILED, Snippets.STORE_FILE_FAILED, null)
+	    			new ResponseObject(Snippets.FAILED, Snippets.STORE_FILE_FAILED, filename)
 	    			);
     			
     }
@@ -112,4 +118,6 @@ public class UserController {
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         userService.refreshToken(request,response);
     }
+
+
 }

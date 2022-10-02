@@ -201,4 +201,30 @@ public class AdminController {
 				new ResponseObject(Snippets.FAILED, String.format(Snippets.NOT_FOUND,Snippets.PRODUCT,id), null)
 		);
 	}
+
+	@PutMapping("/update_role/{username}")
+	public ResponseEntity<ResponseObject> changeRole(@PathVariable String username, @RequestBody User user){
+		user.setUsername(username);
+		if(userService.findByUsername(username) != null) {
+			UserDTO userDTO = ConvertEntity.convertToDTO(userService.changeRoleUser(user));
+			return ResponseEntity.status(HttpStatus.OK).body(
+					new ResponseObject(Snippets.SUCCESS, Snippets.USER_EDITED, userDTO)
+			);
+		}
+		return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
+				new ResponseObject(Snippets.FAILED,Snippets.YOU_DONT_HAVE_PERMISSION, null));
+	}
+
+	@PutMapping("/update_active/{username}")
+	public ResponseEntity<ResponseObject> changeActive(@PathVariable String username, @RequestBody User user){
+		user.setUsername(username);
+		if(userService.findByUsername(username) != null) {
+			UserDTO userDTO = ConvertEntity.convertToDTO(userService.changeActiveUser(user));
+			return ResponseEntity.status(HttpStatus.OK).body(
+					new ResponseObject(Snippets.SUCCESS, Snippets.USER_EDITED, userDTO)
+			);
+		}
+		return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
+				new ResponseObject(Snippets.FAILED,Snippets.YOU_DONT_HAVE_PERMISSION, null));
+	}
 }

@@ -10,6 +10,8 @@ import com.duongtai.estore.entities.*;
 import com.duongtai.estore.repositories.UserRepository;
 import com.duongtai.estore.services.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -33,7 +35,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
-
+    private static final Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
     @Autowired
     private UserRepository userRepository;
 
@@ -80,10 +82,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public synchronized User saveUser(User user) {
+
         if (findByEmail(user.getEmail()) != null || findByUsername(user.getUsername()) != null){
             return null;
         }
-        
+
         Role default_role_user = roleService.getRoleByName(ROLE_USER);
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat(Snippets.TIME_PATTERN);
@@ -96,7 +99,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication.isAuthenticated()){
-            System.out.println(Snippets.USER_LOGGED_IN + " with: "+getUsernameLogin());
+            LOG.info(String.format("User '%s' register successfully",
+                    user.getUsername()));
         }else{
             System.out.println(Snippets.USER_DO_NOT_LOGIN);
         }
@@ -115,18 +119,19 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         SimpleDateFormat sdf = new SimpleDateFormat(Snippets.TIME_PATTERN);
         User getUser = userRepository.findByUsername(user.getUsername());
         getUser.setId(getUser.getId());
-        if(user.getActive() != getUser.getActive()) {
-        	getUser.setActive(user.getActive());
+
+        if(user.getProfile_image() != null && !user.getProfile_image().equals(getUser.getProfile_image())){
+            getUser.setProfile_image(user.getProfile_image());
         }
+
+        if(user.getActive() != getUser.getActive()) {
+            getUser.setActive(!getUser.getActive());
+        }
+
         if(user.getFull_name() != null){
             getUser.setFull_name(user.getFull_name());
         }
-        if(user.getRole() != null || user.getRole() != getUser.getRole()){
-            getUser.setRole(user.getRole());
-        }
-        if(user.getProfile_image()!=null){
-            getUser.setProfile_image(user.getProfile_image());
-        }
+
         if(user.getGender()>0 && user.getGender() <=2){
             getUser.setGender(user.getGender());
         }
@@ -134,6 +139,17 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         
         return userRepository.save(getUser);
     }
+
+    @Override
+    public User changeProfileImage(User user) {
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat(Snippets.TIME_PATTERN);
+        User getUser = userRepository.findByUsername(user.getUsername());
+        getUser.setLast_edited(sdf.format(date));
+        getUser.setProfile_image(user.getProfile_image());
+        return userRepository.save(getUser);
+    }
+
 
     @Override
     public synchronized boolean updatePassword(String newPassword) {
@@ -208,5 +224,27 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	public List<User> findAllUser() {
 		return userRepository.findAll();
 	}
+
+    @Override
+    public User changeRoleUser(User user) {
+        Role role = userRepository.findByUsername(getUsernameLogin()).getRole();
+        if(role.getName().equals(Snippets.ROLE_ADMIN)){
+                User foundUser = userRepository.findByUsername(user.getUsername());
+                foundUser.setRole(user.getRole());
+                return userRepository.save(foundUser);
+        }
+        return null;
+    }
+
+    @Override
+    public User changeActiveUser(User user) {
+        Role role = userRepository.findByUsername(getUsernameLogin()).getRole();
+        if(role.getName().equals(Snippets.ROLE_ADMIN)){
+                User foundUser = userRepository.findByUsername(user.getUsername());
+                foundUser.setActive(user.getActive());
+                return userRepository.save(foundUser);
+        }
+        return null;
+    }
 
 }

@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +16,7 @@ import com.duongtai.estore.services.VendorService;
 import static com.duongtai.estore.configs.MyUserDetail.getUsernameLogin;
 @Service
 public class VendorServiceImpl implements VendorService{
-
+	private static final Logger LOG = LoggerFactory.getLogger(VendorServiceImpl.class);
 	@Autowired
 	private VendorRepository vendorRepository;
 	
@@ -25,6 +27,9 @@ public class VendorServiceImpl implements VendorService{
 	        vendor.setCreated_at(sdf.format(date));
 	        vendor.setLast_edited(sdf.format(date));
 	        vendor.setCreated_by(getUsernameLogin());
+		LOG.info(String.format("Admin: '%s' have create new vendor name '%s' successfully",
+				getUsernameLogin(),
+				vendor.getName()));
 			return vendorRepository.save(vendor);
 	}
 

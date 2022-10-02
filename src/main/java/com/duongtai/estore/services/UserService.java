@@ -22,6 +22,8 @@ public interface UserService {
 
     User editByUsername(User user);
 
+    User changeProfileImage(User user);
+
     boolean updatePassword(String newPassword);
 
     void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException;
@@ -29,4 +31,8 @@ public interface UserService {
 	List<Order> findOrderByUsername(String username);
 	
 	List<User> findAllUser();
+
+    User changeRoleUser(User user);
+
+    User changeActiveUser(User user);
 }
