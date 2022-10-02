@@ -1,10 +1,7 @@
 package com.duongtai.estore.controllers;
 
 import com.duongtai.estore.configs.Snippets;
-import com.duongtai.estore.entities.ConvertEntity;
-import com.duongtai.estore.entities.ResponseObject;
-import com.duongtai.estore.entities.User;
-import com.duongtai.estore.entities.UserDTO;
+import com.duongtai.estore.entities.*;
 import com.duongtai.estore.services.impl.StorageServiceImpl;
 import com.duongtai.estore.services.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -108,7 +105,7 @@ public class UserController {
 
     }
 
-    @GetMapping("/images/{username}")
+    @GetMapping("images/{username}")
     public ResponseEntity<byte[]> readUserImage (@PathVariable String username){
         return storageService.readProfileImage(username);
     }
@@ -118,6 +115,5 @@ public class UserController {
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         userService.refreshToken(request,response);
     }
-
 
 }

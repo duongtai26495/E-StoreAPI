@@ -227,4 +227,16 @@ public class AdminController {
 		return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
 				new ResponseObject(Snippets.FAILED,Snippets.YOU_DONT_HAVE_PERMISSION, null));
 	}
+
+	@GetMapping("/all_orders")
+	public ResponseEntity<ResponseObject> getAllOrders(){
+		if(orderService.findAllOrder() != null){
+			return ResponseEntity.status(HttpStatus.OK).body(
+					new ResponseObject(Snippets.SUCCESS, Snippets.FOUNDED, orderService.findAllOrder())
+			);
+		}
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
+				new ResponseObject(Snippets.SUCCESS, Snippets.NOT_PERMISSION, null)
+		);
+	}
 }

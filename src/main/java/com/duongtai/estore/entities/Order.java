@@ -86,7 +86,7 @@ public class Order {
 	}
 
 	public double getTotal() {
-	
+
 		return total;
 	}
 

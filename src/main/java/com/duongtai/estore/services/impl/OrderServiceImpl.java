@@ -1,5 +1,7 @@
 package com.duongtai.estore.services.impl;
 
+import com.duongtai.estore.entities.Role;
+import com.duongtai.estore.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +23,10 @@ public class OrderServiceImpl implements OrderService{
 	
 	@Autowired
 	private UserServiceImpl userService;
-	
+
+	@Autowired
+	private UserRepository userRepository;
+
 	@Override
 	public Order saveOrder(Order order) {
 		order.setCustomer(userService.findByUsername(getUsernameLogin()));
@@ -58,7 +63,11 @@ public class OrderServiceImpl implements OrderService{
 
 	@Override
 	public List<Order> findAllOrder() {
-		return orderRepository.findAll();
+		Role role = userRepository.findByUsername(getUsernameLogin()).getRole();
+		if(role.getName().equals(Snippets.ROLE_ADMIN)) {
+			return orderRepository.findAll();
+		}
+		return null;
 	}
 
 }
